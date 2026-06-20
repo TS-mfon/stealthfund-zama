@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
-import {FHE, euint64, externalEuint64} from "@fhevm/solidity/lib/FHE.sol";
+import {FHE, ebool, euint64, externalEuint64} from "@fhevm/solidity/lib/FHE.sol";
 import {ZamaEthereumConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
@@ -45,23 +45,26 @@ contract MockConfidentialUSD is ZamaEthereumConfig, AccessControl, Pausable {
         emit OperatorSet(msg.sender, operator, approved);
     }
 
-    function confidentialTransfer(address to, externalEuint64 encryptedAmount, bytes calldata proof) external whenNotPaused {
-        _transfer(msg.sender, msg.sender, to, FHE.fromExternal(encryptedAmount, proof));
+    function confidentialTransfer(address to, externalEuint64 encryptedAmount, bytes calldata proof) external whenNotPaused returns (euint64) {
+        return _transfer(msg.sender, msg.sender, to, FHE.fromExternal(encryptedAmount, proof));
     }
 
-    function confidentialTransferFrom(address from, address to, euint64 amount) external whenNotPaused {
+    function confidentialTransferFrom(address from, address to, euint64 amount) external whenNotPaused returns (euint64) {
         if (msg.sender != from && !isOperator[from][msg.sender]) revert NotOperator();
-        _transfer(msg.sender, from, to, amount);
+        return _transfer(msg.sender, from, to, amount);
     }
 
-    function _transfer(address operator, address from, address to, euint64 amount) internal {
+    function _transfer(address operator, address from, address to, euint64 amount) internal returns (euint64 transferable) {
         if (to == address(0)) revert InvalidRecipient();
-        _balances[from] = FHE.sub(_balances[from], amount);
-        _balances[to] = FHE.add(_balances[to], amount);
+        ebool sufficient = FHE.le(amount, _balances[from]);
+        transferable = FHE.select(sufficient, amount, FHE.asEuint64(0));
+        _balances[from] = FHE.sub(_balances[from], transferable);
+        _balances[to] = FHE.add(_balances[to], transferable);
         FHE.allowThis(_balances[from]);
         FHE.allowThis(_balances[to]);
         FHE.allow(_balances[from], from);
         FHE.allow(_balances[to], to);
+        FHE.allowTransient(transferable, msg.sender);
         emit ConfidentialTransfer(operator, from, to);
     }
 

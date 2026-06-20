@@ -21,6 +21,8 @@ pnpm dev
 ## Sepolia
 
 - cUSD: `0x42eB87cb7d1bb5A83cE15b4f2a34e1722Bd43f4b`
-- Factory: `0x7e339f3bCFb6699c697143023d51581B3Ac034fD`
+- Factory: `0xBF5163D30a914d907BE2fB9973940668e404127e`
+- Live Cipher Labs campaign: `0x836Ea41903aC2aee56c0A7AFc403D83c951bDdA6`
+- Revenue distributor: `0x4736e30099712EfdEc0671664d42a3518D0b983D`
 
 This is testnet infrastructure. Participation units are not legal equity or securities. Deployment transactions are recorded in `deployments/sepolia.json`.

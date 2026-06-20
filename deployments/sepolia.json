@@ -2,9 +2,13 @@
   "chainId": 11155111,
   "deployer": "0xEd9EDd8586b20524CafA4F568413C504C9B03172",
   "mockConfidentialUSD": "0x42eB87cb7d1bb5A83cE15b4f2a34e1722Bd43f4b",
-  "factory": "0x7e339f3bCFb6699c697143023d51581B3Ac034fD",
+  "factory": "0xBF5163D30a914d907BE2fB9973940668e404127e",
+  "liveCampaign": "0x836Ea41903aC2aee56c0A7AFc403D83c951bDdA6",
+  "liveRevenueDistributor": "0x4736e30099712EfdEc0671664d42a3518D0b983D",
   "transactions": {
     "mockConfidentialUSD": "0xdc8b58d120a48a84a184549b2bf6a473cf53087e8674c6fc05de9b8e1456ae84",
-    "factory": "0xd3421efd67158bd126fee876f0ac7a6215ec5525b150dc05b63441defa1e02c3"
+    "factory": "0xe1dac65e71d723414f7c57d312a12f11a33fb37c80056b2feeceb5d28d51c797",
+    "createCampaign": "0xc90a37c0a17c9205c11f111466329c481380e3f733a5e759d50b8eb1809bb5f7",
+    "activateCampaign": "0x3b69771deacbaeebdb2f4430b394af1e0deff4cd589ea3cbb36d0528e45e678b"
   }
 }
