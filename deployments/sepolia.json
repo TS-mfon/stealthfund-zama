@@ -1,0 +1,10 @@
+{
+  "chainId": 11155111,
+  "deployer": "0xEd9EDd8586b20524CafA4F568413C504C9B03172",
+  "mockConfidentialUSD": "0x42eB87cb7d1bb5A83cE15b4f2a34e1722Bd43f4b",
+  "factory": "0x7e339f3bCFb6699c697143023d51581B3Ac034fD",
+  "transactions": {
+    "mockConfidentialUSD": "0xdc8b58d120a48a84a184549b2bf6a473cf53087e8674c6fc05de9b8e1456ae84",
+    "factory": "0xd3421efd67158bd126fee876f0ac7a6215ec5525b150dc05b63441defa1e02c3"
+  }
+}
