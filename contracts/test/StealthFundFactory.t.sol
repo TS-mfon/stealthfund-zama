@@ -3,6 +3,7 @@ pragma solidity ^0.8.27;
 
 import {StealthFundFactory} from "../src/StealthFundFactory.sol";
 import {StealthCampaign} from "../src/StealthCampaign.sol";
+import {MockConfidentialUSD} from "../src/MockConfidentialUSD.sol";
 
 contract StealthFundFactoryTest {
     function testCreateAndActivateCampaign() public {
@@ -20,6 +21,19 @@ contract StealthFundFactoryTest {
         StealthFundFactory factory = new StealthFundFactory(address(0xC0FFEE));
         try factory.createCampaign(bytes32(0), bytes32(0), 200, 100, 1, bytes32(uint256(1))) {
             revert("invalid window accepted");
+        } catch {}
+    }
+
+    function testFaucetMintsExactlyOneThousandCusd() public {
+        MockConfidentialUSD token = new MockConfidentialUSD(address(this));
+        require(token.DEFAULT_FAUCET_AMOUNT() == 1_000e6, "wrong default faucet amount");
+        require(token.MAX_FAUCET_AMOUNT() == 1_000e6, "wrong max faucet amount");
+    }
+
+    function testRejectsOversizedFaucetAmount() public {
+        MockConfidentialUSD token = new MockConfidentialUSD(address(this));
+        try token.faucet(1_001e6) {
+            revert("oversized faucet accepted");
         } catch {}
     }
 }

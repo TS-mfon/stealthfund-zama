@@ -11,7 +11,8 @@ contract MockConfidentialUSD is ZamaEthereumConfig, AccessControl, Pausable {
     string public constant symbol = "cUSD";
     uint8 public constant decimals = 6;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    uint64 public constant FAUCET_AMOUNT = 10_000e6;
+    uint64 public constant DEFAULT_FAUCET_AMOUNT = 1_000e6;
+    uint64 public constant MAX_FAUCET_AMOUNT = 1_000e6;
     uint64 public constant FAUCET_COOLDOWN = 1 days;
 
     mapping(address => euint64) private _balances;
@@ -19,10 +20,11 @@ contract MockConfidentialUSD is ZamaEthereumConfig, AccessControl, Pausable {
     mapping(address => mapping(address => bool)) public isOperator;
 
     error FaucetCoolingDown();
+    error InvalidFaucetAmount();
     error InvalidRecipient();
     error NotOperator();
 
-    event FaucetMint(address indexed account);
+    event FaucetMint(address indexed account, uint64 amount);
     event ConfidentialTransfer(address indexed operator, address indexed from, address indexed to);
     event OperatorSet(address indexed holder, address indexed operator, bool approved);
 
@@ -32,12 +34,17 @@ contract MockConfidentialUSD is ZamaEthereumConfig, AccessControl, Pausable {
     }
 
     function faucet() external whenNotPaused {
+        faucet(DEFAULT_FAUCET_AMOUNT);
+    }
+
+    function faucet(uint64 amount) public whenNotPaused {
+        if (amount == 0 || amount > MAX_FAUCET_AMOUNT) revert InvalidFaucetAmount();
         if (lastFaucetAt[msg.sender] != 0 && block.timestamp < lastFaucetAt[msg.sender] + FAUCET_COOLDOWN) revert FaucetCoolingDown();
         lastFaucetAt[msg.sender] = uint64(block.timestamp);
-        _balances[msg.sender] = FHE.add(_balances[msg.sender], FAUCET_AMOUNT);
+        _balances[msg.sender] = FHE.add(_balances[msg.sender], amount);
         FHE.allowThis(_balances[msg.sender]);
         FHE.allow(_balances[msg.sender], msg.sender);
-        emit FaucetMint(msg.sender);
+        emit FaucetMint(msg.sender, amount);
     }
 
     function setOperator(address operator, bool approved) external {

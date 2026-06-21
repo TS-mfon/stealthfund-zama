@@ -1,0 +1,7 @@
+{
+  "name": "Cipher Labs",
+  "instrument": "revenue-share-v1",
+  "thresholdCusd": "50000",
+  "durationDays": 30,
+  "publicThesis": "Confidential infrastructure for private startup financing."
+}

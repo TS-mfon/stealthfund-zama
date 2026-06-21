@@ -1,2 +1,7 @@
-import { StealthApp } from "@/components/stealth-app";
-export default function Page(){return <StealthApp/>}
+import Link from "next/link";
+import { ArrowUpRight, EyeOff, Landmark, ShieldCheck, Vote } from "lucide-react";
+import { StealthShell } from "@/components/stealth/shell";
+
+export default function Page() {
+  return <StealthShell><header><div className="kicker">PRIVATE MARKETS / PUBLIC ASSURANCE</div><h1>Capital without<br/><span>the exposure.</span></h1><p>Confidential startup financing on Ethereum. Commitments, participation, and votes stay encrypted while execution remains verifiable.</p><div className="metrics"><div><b>ENCRYPTED</b><span>Commitments</span></div><div><b>PRIVATE</b><span>Positions</span></div><div><b>VERIFIABLE</b><span>Settlement</span></div></div><div className="heroActions"><Link href="/raises">Explore raises <ArrowUpRight size={16}/></Link><Link href="/docs">Read docs</Link></div></header><section className="protocol"><div><small>PROTOCOL MODEL</small><h2>Private values.<br/>Public state.</h2></div><ol><li><span>01</span><b>Encrypt</b><p>The browser encrypts cUSD commitments through Zama.</p></li><li><span>02</span><b>Escrow</b><p>Campaign contracts pull encrypted cUSD and update encrypted totals.</p></li><li><span>03</span><b>Settle</b><p>Only campaign outcomes are public. Position values remain private.</p></li></ol></section><section className="safetyStrip"><span><ShieldCheck/> User-only disclosure</span><span><Landmark/> Contract escrow</span><span><Vote/> Private weighted voting</span><span><EyeOff/> Hidden commitments</span></section></StealthShell>;
+}
