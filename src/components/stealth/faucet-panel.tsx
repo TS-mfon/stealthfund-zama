@@ -42,12 +42,8 @@ export function FaucetPanel() {
       setStatus(`Minting ${amount} cUSD privately…`);
       const hash = await walletClient.writeContract({ address: stealthContracts.cUSD, abi: tokenAbi, functionName: "faucet", args: [BigInt(raw)], account: address, chain: sepolia });
       await publicClient.waitForTransactionReceipt({ hash });
-      const key = `stealthfund:cusd:${address.toLowerCase()}`;
-      const next = (BigInt(localStorage.getItem(key) || "0") + raw).toString();
-      localStorage.setItem(key, next);
-      window.dispatchEvent(new Event("stealthfund:portfolio-updated"));
       setSuccess(`Success: ${amount} cUSD minted. Tx ${hash.slice(0, 10)}…`);
-      setStatus("Mint succeeded. You can now fund raises.");
+      setStatus("Mint succeeded. cUSD balances are confidential, so the UI does not mirror them in browser storage.");
     } catch (error) {
       setSuccess("");
       setStatus(humanError(error));

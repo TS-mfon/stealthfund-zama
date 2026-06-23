@@ -56,6 +56,7 @@ Addresses are versioned in `deployments/sepolia.json`.
 7. The Zama relayer encrypts the raw 6-decimal amount locally.
 8. The app submits only the encrypted handle and proof to `commit`.
 9. The campaign pulls encrypted cUSD into escrow and updates encrypted individual/aggregate commitments.
+10. The app saves a global participation record containing campaign address, transaction hash, timestamp, and status. It does not save plaintext commitment amounts.
 
 ## Founder flow
 
@@ -121,7 +122,12 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
 NEXT_PUBLIC_CUSD_ADDRESS=0x...
 NEXT_PUBLIC_FACTORY_ADDRESS=0x...
 NEXT_PUBLIC_LIVE_CAMPAIGN_ADDRESS=0x...
+BLOB_READ_WRITE_TOKEN=vercel_blob_token
 ```
+
+## No-database storage model
+
+StealthFund does not use a SQL database, browser `localStorage`, `sessionStorage`, or IndexedDB for product state. Portfolio participation records are stored as Vercel Blob JSON objects keyed by chain and wallet. These records intentionally omit plaintext cUSD balances and commitment amounts because those values are confidential FHE state.
 
 ## Testing
 
@@ -170,4 +176,3 @@ npx vercel deploy --prebuilt --prod --yes --archive=tgz
 - Encrypted values depend on Zama ACL and proof verification.
 - This testnet product models revenue-participation units, not legally issued equity or securities.
 - No production funds should be used before an independent audit.
-
