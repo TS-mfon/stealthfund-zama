@@ -31,9 +31,9 @@ export function humanError(error: unknown): string {
   if (/Address .* invalid|checksum|hex value of 20 bytes/i.test(message)) return "Invalid contract address. The app now normalizes addresses; refresh and retry.";
   if (/insufficient funds/i.test(message)) return "Insufficient Sepolia ETH for gas.";
   if (/FaucetCoolingDown/i.test(message)) return "Faucet cooldown is active for this wallet. Try again later.";
+  if (/Faucet cooldown active/i.test(message)) return message;
   if (/InvalidFaucetAmount/i.test(message)) return "Faucet amount must be between 1 and 1,000 cUSD.";
   if (/relayer|encrypt|FHE|proof/i.test(message)) return `Zama encryption failed: ${message}`;
   if (/execution reverted/i.test(message)) return "Transaction reverted. Check campaign state, cUSD balance, operator approval, and deadline.";
   return message || "Unexpected error.";
 }
-

@@ -28,6 +28,7 @@ contract StealthFundFactoryTest {
         MockConfidentialUSD token = new MockConfidentialUSD(address(this));
         require(token.DEFAULT_FAUCET_AMOUNT() == 1_000e6, "wrong default faucet amount");
         require(token.MAX_FAUCET_AMOUNT() == 1_000e6, "wrong max faucet amount");
+        require(token.FAUCET_COOLDOWN() == 10 minutes, "wrong faucet cooldown");
     }
 
     function testRejectsOversizedFaucetAmount() public {
@@ -35,5 +36,19 @@ contract StealthFundFactoryTest {
         try token.faucet(1_001e6) {
             revert("oversized faucet accepted");
         } catch {}
+    }
+
+    function testCampaignReadFunctions() public {
+        StealthFundFactory factory = new StealthFundFactory(address(0xC0FFEE));
+        address created = factory.createCampaign(keccak256("meta"), keccak256("terms"), 100, 200, 1_000_000, keccak256("salt-2"));
+        StealthCampaign campaign = StealthCampaign(created);
+        require(campaign.founder() == address(this), "wrong founder");
+        require(campaign.fundingToken() == address(0xC0FFEE), "wrong token");
+        require(campaign.metadataHash() == keccak256("meta"), "wrong metadata");
+        require(campaign.termsHash() == keccak256("terms"), "wrong terms");
+        require(campaign.startAt() == 100, "wrong start");
+        require(campaign.endAt() == 200, "wrong end");
+        require(campaign.threshold() == 1_000_000, "wrong threshold");
+        require(factory.campaignsOf(address(this)).length == 1, "campaign not indexed");
     }
 }

@@ -13,7 +13,7 @@ contract MockConfidentialUSD is ZamaEthereumConfig, AccessControl, Pausable {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     uint64 public constant DEFAULT_FAUCET_AMOUNT = 1_000e6;
     uint64 public constant MAX_FAUCET_AMOUNT = 1_000e6;
-    uint64 public constant FAUCET_COOLDOWN = 1 days;
+    uint64 public constant FAUCET_COOLDOWN = 10 minutes;
 
     mapping(address => euint64) private _balances;
     mapping(address => uint64) public lastFaucetAt;

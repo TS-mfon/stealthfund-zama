@@ -3,6 +3,8 @@ export const tokenAbi = [
   { type: "function", name: "faucet", stateMutability: "nonpayable", inputs: [{ name: "amount", type: "uint64" }], outputs: [] },
   { type: "function", name: "setOperator", stateMutability: "nonpayable", inputs: [{ name: "operator", type: "address" }, { name: "approved", type: "bool" }], outputs: [] },
   { type: "function", name: "lastFaucetAt", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ type: "uint64" }] },
+  { type: "function", name: "FAUCET_COOLDOWN", stateMutability: "view", inputs: [], outputs: [{ type: "uint64" }] },
+  { type: "function", name: "DEFAULT_FAUCET_AMOUNT", stateMutability: "view", inputs: [], outputs: [{ type: "uint64" }] },
 ] as const;
 
 export const campaignAbi = [
@@ -28,4 +30,3 @@ export const factoryAbi = [
     { indexed: false, name: "metadataHash", type: "bytes32" },
   ] },
 ] as const;
-
